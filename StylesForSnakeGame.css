@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Monoton&display=swap');
+
+body{
+    background-image: url(ImagesForSnakeGame/Background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.section-1 {
+    margin: 80px auto 0;
+    padding-top: 10px;
+    max-width: 800px;
+    height: 550px;
+    background-color: #3EB489;
+    filter: drop-shadow(10px 10px 10px rgba(0, 0, 0, 0.5));
+    border-radius: 10px;
+}
+
+.section-1__top{
+    margin: 0 auto;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.section-1__restart, .section-1__score{
+    width: 150px;
+    text-align: center;
+    font-family: Black Han Sans;
+}
+
+.section-1__score{
+    margin-left: 30px;
+}
+
+.section-1__score p {
+    margin-top: 10px;
+}
+
+.section-1__best, .section-1__current{
+    font-size: 20px;
+}
+
+.section-1__restart{
+    margin: 10px 30px;
+}
+
+.section-1__restart-btn{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.section-1__restart-snake{
+    transform: rotate(-33deg);
+    transition: transform 0.5s linear;
+}
+
+.section-1__restart-snake:hover{
+    transform: rotate(330deg);
+}
+
+.section-1__restart-txt{
+    margin-bottom: 5px;
+    font-weight: 400;
+}
+
+.section-1__field{
+    margin: 30px auto;
+    width: 410px;
+    height: 410px;
+    background-color:white;
+    border: 3px solid black;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+}
+
+.active{
+    background-color:black;
+}
+
+.apple{
+    background-color: red;
+}
