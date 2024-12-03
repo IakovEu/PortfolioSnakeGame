@@ -80,7 +80,7 @@ class Apple extends Snake {
         }, x);
     }
 }
-
+//---------------------------------ниже обработчики событий, не хочу делать отдельный документ для них-------------------------------------
 document.addEventListener('keydown', event => {
     switch (event.key) {
         case 'ArrowUp':
@@ -99,7 +99,6 @@ document.addEventListener('keydown', event => {
 });
 
 const apple = new Apple(6, 6);
-
 const play = document.querySelector('.section-1__play');
 
 play.addEventListener('click', function () {
@@ -107,6 +106,10 @@ play.addEventListener('click', function () {
     apple.startMoving();
     apple.eatingApples();
     play.style = 'display : none';
+    if ('null' == document.querySelector('.section-1__best').textContent) {
+        localStorage.setItem('key', 0); // на случай очищения localStorage() начать игру и все будет норм
+        window.location.reload();
+    }
 })
 
 document.querySelector('.section-1__restart-btn').addEventListener('click', () => {
