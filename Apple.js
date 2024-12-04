@@ -1,5 +1,5 @@
 class Apple extends Snake {
-    createApple() {
+    #createApple() {
         document.querySelectorAll('.div').forEach((el) => { el.classList.remove('apple') }); // чтобы на 30-40+ не создавал больше 1 яблока
         const randomX = Math.ceil(Math.random() * (10 - 0));
         const randomY = Math.ceil(Math.random() * (10 - 0));
@@ -8,11 +8,11 @@ class Apple extends Snake {
         this.body.forEach((el) => {
             if (el.x == randomX && el.y == randomY) {
                 cellApple.classList.remove('apple');
-                this.createApple();
+                this.#createApple();
             }
         })
     };
-    grow() {
+    #grow() {
         const head = this.body[0];
         let newHead;
         if (this.direction == 'right') {
@@ -31,27 +31,38 @@ class Apple extends Snake {
         for (i = 0; i < this.body.length - 1; i++)
             for (q = i + 1; q < this.body.length; q++)
                 if (this.body[i].x == this.body[q].x && this.body[i].y == this.body[q].y) {
+                    this.#deleteScore();
                     this._over = true;
                 }
+    }
+    #score = 0;
+    #increaseScore() {
+        return this.#score += 1;   // сеттер (реализация инкапсуляции)   
+    }
+    #getScore() {
+        return this.#score; // геттер (взаимодействовать со свойствами и методами напрямую нельзя, чтобы не менять current score вручную!)
+    }
+    #deleteScore() {
+        return this.#score = 0; // проще же создать score в другой функции и доступа к нему и так не будет
     }
     eatingApples() {
         const divs = document.querySelectorAll('.div');
         divs.forEach((el) => { el.classList.remove('apple') }); // чтобы на 30-40+ не создавал больше 1 яблока
-        this.createApple()
-        let score = 0;
+        this.#createApple()
         const int1 = setInterval(() => {
             this.#bump();
             divs.forEach((el) => {
                 if (el.classList.contains('apple') && el.classList.contains('active')) {
                     el.classList.remove('apple');
-                    this.createApple();
-                    this.grow();
+                    this.#createApple();
+                    this.#grow();
+                    this.#increaseScore();
+                    let x = this.#getScore();
                     (function () {
-                        score += 1;
-                        document.querySelector('.section-1__current').innerHTML = `<p>${score}</p>`;
-                        if (score > +document.querySelector('.section-1__best').textContent) {
+                        document.querySelector('.section-1__current').innerHTML = `<p>${x}</p>`;
+                        if (x > +document.querySelector('.section-1__best').textContent) {
                             localStorage.clear();
-                            localStorage.setItem('key', score);
+                            localStorage.setItem('key', x);
                         }
                     }());
                 }
@@ -60,9 +71,8 @@ class Apple extends Snake {
                 clearInterval(int1);
                 divs.forEach((el) => { el.classList.remove('apple') });
             }
-        }, 500)
+        }, 250);
     }
-
     startMoving(x = 500, i = 3) {
         this.changeClass();
         const int2 = setInterval(() => {
@@ -102,18 +112,18 @@ const apple = new Apple(6, 6);
 const play = document.querySelector('.section-1__play');
 
 play.addEventListener('click', function () {
-    apple.createField(10);
+    Field.createField(10);
     apple.startMoving();
     apple.eatingApples();
     play.style = 'display : none';
     if ('null' == document.querySelector('.section-1__best').textContent) {
-        localStorage.setItem('key', 0); // на случай очищения localStorage() начать игру и все будет норм
+        localStorage.setItem('key', 0); // на случай очищения localStorage (начать игру и все будет норм)
         window.location.reload();
     }
 })
 
 document.querySelector('.section-1__restart-btn').addEventListener('click', () => {
-    if (apple._over) {
+    if (apple._over !== false) {
         apple._over = false;
         apple.startMoving();
         apple.eatingApples();
